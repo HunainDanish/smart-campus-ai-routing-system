@@ -1,21 +1,75 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Smart Campus AI Routing System
 
-# Run and deploy your AI Studio app
+An intelligent AI-powered campus request routing and navigation system integrating:
 
-This contains everything you need to run your app locally.
+- Artificial Neural Networks (ANN)
+- Logic-Based Knowledge Reasoning
+- Constraint Satisfaction Problem (CSP) Scheduling
+- Search Algorithms (BFS, UCS, A*)
 
-View your app in AI Studio: https://ai.studio/apps/0a240983-ca47-41aa-ae5b-fdccc054a572
+Built using:
+- React
+- TypeScript
+- Vite
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## Features
 
+- Dynamic AI pipeline routing
+- Priority prediction using ANN
+- Authorization reasoning using Logic KB
+- Smart room and slot scheduling using CSP
+- Campus navigation using graph search algorithms
+- Interactive modern frontend dashboard
+- JSON export support
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
-# smart-campus-ai-routing-system
+---
+
+## Implemented Algorithms
+
+### Search Algorithms
+- Breadth First Search (BFS)
+- Uniform Cost Search (UCS)
+- A* Search
+
+### AI Components
+- Perceptron Binary Classifier
+- Multiclass MLP Simulation
+- Rule-Based Expert System
+- CSP Scheduling Simulation
+
+---
+
+## Tech Stack
+
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide React
+
+---
+
+## Project Architecture
+
+Preprocessing  
+→ Router  
+→ ANN Module  
+→ Logic KB  
+→ CSP Scheduler  
+→ Search Module  
+→ Final Response
+
+---
+
+## Deployment
+
+This project can be deployed directly on Vercel.
+
+---
+
+## Author
+
+Hunain Danish

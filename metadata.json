@@ -1,0 +1,6 @@
+{
+  "name": "Smart Campus AI",
+  "description": "An intelligent campus platform integrating ANN, Logic KB, CSP, and Search for automated decision support and navigation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}
