@@ -6,7 +6,7 @@ import { cspSchedule } from './csp';
 import { computeRoute } from './search';
 
 export function routeRequest(request: StructuredRequest): RouterOutput {
-  const { request_type } = request;
+  const { request_type, route_guidance_requested } = request;
   
   const output: RouterOutput = {
     request_id: request.request_id,
@@ -19,32 +19,32 @@ export function routeRequest(request: StructuredRequest): RouterOutput {
 
   switch (request_type) {
     case 'Navigation_Only':
-      output.selected_pipeline = ['Search'];
-      output.needs_search = true;
+      output.selected_pipeline = route_guidance_requested ? ['Search'] : [];
+      output.needs_search = !!route_guidance_requested;
       break;
     case 'Eligibility_Check':
       output.selected_pipeline = ['Logic_KB'];
       output.needs_logic = true;
       break;
     case 'Booking_or_Scheduling':
-      output.selected_pipeline = ['Logic_KB', 'CSP', 'Search'];
+      output.selected_pipeline = ['Logic_KB', 'CSP'];
       output.needs_logic = true;
       output.needs_csp = true;
-      output.needs_search = true;
+      if (route_guidance_requested) {
+        output.selected_pipeline.push('Search');
+        output.needs_search = true;
+      }
       break;
     case 'Urgent_Service_Request':
-      output.selected_pipeline = ['ANN', 'Logic_KB', 'CSP', 'Search'];
-      output.needs_ann = true;
-      output.needs_logic = true;
-      output.needs_csp = true;
-      output.needs_search = true;
-      break;
     case 'Full_Service_Request':
-      output.selected_pipeline = ['ANN', 'Logic_KB', 'CSP', 'Search'];
+      output.selected_pipeline = ['ANN', 'Logic_KB', 'CSP'];
       output.needs_ann = true;
       output.needs_logic = true;
       output.needs_csp = true;
-      output.needs_search = true;
+      if (route_guidance_requested) {
+        output.selected_pipeline.push('Search');
+        output.needs_search = true;
+      }
       break;
   }
 
@@ -96,7 +96,7 @@ export function processPipeline(formData: any): FinalResponse {
     }
 
     // 4. Search Module
-    if (router.needs_search || request.destination) {
+    if (router.needs_search) {
       const start = request.current_location || "Main_Gate";
       const goal = request.destination;
       

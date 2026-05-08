@@ -46,6 +46,10 @@ export function preprocessRequest(formData: any): StructuredRequest {
     throw new Error('Invalid request type');
   }
 
+  if (formData.request_type === 'Eligibility_Check' && (!formData.query || formData.query.trim() === '')) {
+    throw new Error('Eligibility_Check requests require a query');
+  }
+
   if (formData.current_location && !CAMPUS_NODES[formData.current_location]) {
     throw new Error('Invalid current location');
   }

@@ -24,10 +24,10 @@ import { processPipeline } from './modules/router';
 
 const STEPS = [
   { id: 'identity', title: 'Identity', fields: ['name', 'role'] },
-  { id: 'request', title: 'Request Type', fields: ['request_type', 'category'] },
+  { id: 'request', title: 'Request Type', fields: ['request_type', 'category', 'query'] },
   { id: 'context', title: 'Location & Timing', fields: ['current_location', 'destination', 'preferred_slot'] },
   { id: 'priority', title: 'Urgency Factors', fields: ['severity', 'time_sensitivity', 'crowd_level'] },
-  { id: 'review', title: 'Finalize & Run', fields: ['description_note', 'eligibility_claim'] },
+  { id: 'review', title: 'Finalize & Run', fields: ['description_note', 'eligibility_claim', 'route_guidance_requested'] },
 ];
 
 const ROLES: Role[] = ['student', 'instructor', 'staff'];
@@ -57,7 +57,9 @@ export default function App() {
     severity: 5,
     time_sensitivity: 5,
     crowd_level: 5,
-    eligibility_claim: true
+    eligibility_claim: true,
+    route_guidance_requested: false,
+    query: ''
   });
 
   const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length - 1));
@@ -79,6 +81,9 @@ export default function App() {
   };
 
   const renderField = (field: string) => {
+    if (field === 'query' && formData.request_type !== 'Eligibility_Check') return null;
+    if (field === 'route_guidance_requested' && formData.request_type === 'Eligibility_Check') return null;
+
     switch (field) {
       case 'name':
         return (
@@ -201,6 +206,20 @@ export default function App() {
             />
           </div>
         );
+      case 'query':
+        return (
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-slate-700">Eligibility Query</label>
+            <input
+              type="text"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+              value={formData.query}
+              onChange={e => setFormData({ ...formData, query: e.target.value })}
+              placeholder="e.g. UsesLab(DrKhan, Lab1)"
+            />
+            <p className="text-xs text-slate-500">Use this only for Eligibility Check requests.</p>
+          </div>
+        );
        case 'eligibility_claim':
         return (
           <div className="flex items-center gap-2 py-4">
@@ -212,6 +231,19 @@ export default function App() {
               onChange={e => setFormData({ ...formData, eligibility_claim: e.target.checked })}
             />
             <label htmlFor="eligibility" className="text-sm font-medium text-slate-700">I claim eligibility for this service</label>
+          </div>
+        );
+      case 'route_guidance_requested':
+        return (
+          <div className="flex items-center gap-2 py-4">
+             <input 
+              type="checkbox" 
+              id="routeGuidance"
+              className="w-5 h-5 accent-blue-600"
+              checked={formData.route_guidance_requested}
+              onChange={e => setFormData({ ...formData, route_guidance_requested: e.target.checked })}
+            />
+            <label htmlFor="routeGuidance" className="text-sm font-medium text-slate-700">Request route guidance</label>
           </div>
         );
       default:
@@ -280,9 +312,10 @@ export default function App() {
                   </div>
 
                   <div className="space-y-6 flex-1">
-                    {STEPS[currentStep].fields.map(field => (
-                      <div key={field}>{renderField(field)}</div>
-                    ))}
+                    {STEPS[currentStep].fields.map(field => {
+                      const fieldComponent = renderField(field);
+                      return fieldComponent ? <div key={field}>{fieldComponent}</div> : null;
+                    })}
                   </div>
 
                   <div className="mt-12 flex items-center justify-between pt-6 border-t border-slate-100">

@@ -20,6 +20,8 @@ Built using:
 - Priority prediction using ANN
 - Authorization reasoning using Logic KB
 - Smart room and slot scheduling using CSP
+- Explicit eligibility query support for Logic KB
+- Optional route guidance only when requested
 - Campus navigation using graph search algorithms
 - Interactive modern frontend dashboard
 - JSON export support
@@ -56,11 +58,11 @@ Built using:
 
 Preprocessing  
 → Router  
-→ ANN Module  
-→ Logic KB  
-→ CSP Scheduler  
-→ Search Module  
+→ ANN Module / Logic KB / CSP Scheduler  
+→ Optional Search Module  
 → Final Response
+
+Search runs only when the user requests route guidance or when a destination is assigned and route guidance is required.
 
 ---
 

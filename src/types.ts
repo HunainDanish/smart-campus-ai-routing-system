@@ -37,6 +37,7 @@ export interface StructuredRequest {
   query?: string;
   description_note?: string;
   eligibility_claim?: boolean;
+  route_guidance_requested?: boolean;
 }
 
 export interface SearchOutput {
